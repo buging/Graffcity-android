@@ -3,11 +3,23 @@
 
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_mapa" android:icon="@android:drawable/ic_menu_mapmode"
-            android:title="Ver Mapa" />
+            android:title="@string/nav_mapa" />
         <item android:id="@+id/nav_agregar_graf" android:icon="@android:drawable/ic_menu_add"
-            android:title="Agregar Graffity" />
-        <item android:id="@+id/nav_photos" android:icon="@android:drawable/ic_menu_add"
-            android:title="Photos" />
+            android:title="@string/nav_agregar_graffity" />
+        <item android:id="@+id/nav_photos" android:icon="@android:drawable/ic_menu_gallery"
+            android:title="@string/nav_list_graffitis" />
+        <!-- Sección de configuración -->
+        <item
+            android:id="@+id/configuration_section"
+            android:title="@string/nav_configuracion">
+            <menu>
+                <item
+                    android:id="@+id/nav_log_out"
+                    android:icon="@android:drawable/ic_lock_power_off"
+                    android:title="@string/nav_log_out" />
+            </menu>
+        </item>
+
     </group>
 
 </menu>

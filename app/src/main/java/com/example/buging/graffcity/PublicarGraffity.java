@@ -1,5 +1,8 @@
 package com.example.buging.graffcity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +12,7 @@ import android.location.LocationListener;
 //import com.google.android.gms.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -55,20 +59,30 @@ public class PublicarGraffity extends Fragment{
 
     private String APP_DIRECTORY = "myPictureApp/";
     private String MEDIA_DIRECTORY = APP_DIRECTORY + "media";
-    private String TEMPORAL_PICTURE_NAME = "temporal.jpg";
+    private String[] TEMPORAL_PICTURE_NAME = new String[] {"temporal.jpg","tempora2.jpg","tempora3.jpg","tempora4.jpg"};
 
 
     private final int PHOTO_CODE = 100;
     private final int SELECT_PICTURE = 200;
 
-    private ImageView imageView;
+    private ImageView imageView1;
+    private ImageView imageView2;
+    private ImageView imageView3;
+    private ImageView imageView4;
 
     private Cloudinary cloudinary;
     private JSONObject Result;
     private File file;
     private Button uploadImage;
-    private String url_image = null;
-    private String dir = null; //directorio
+    private String url_image1;
+    private String url_image2;
+    private String url_image3;
+    private String url_image4;
+    private View formPublicaGraffity;
+    private View mProgressView;
+
+    private String[] dir = new String[] {"","","",""};
+    private int pos_dir;
 
     private EditText et_nombre;
     private EditText et_descripcion;
@@ -92,15 +106,28 @@ public class PublicarGraffity extends Fragment{
     private Context context;
     private boolean realizarZoom = false;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.layout_publicar_graffity, container, false);
         context = rootView.getContext();
 
-        imageView = (ImageView) rootView.findViewById(R.id.setPicture);
+        //Se le coloca el icono para agregar una imagen
+        imageView1 = (ImageView) rootView.findViewById(R.id.setPicture1);
+        imageView2 = (ImageView) rootView.findViewById(R.id.setPicture2);
+        imageView3 = (ImageView) rootView.findViewById(R.id.setPicture3);
+        imageView4 = (ImageView) rootView.findViewById(R.id.setPicture4);
         uploadImage = (Button) rootView.findViewById(R.id.uploadImage);
-        imageView.setImageResource(R.drawable.agregar_image);
+        imageView1.setImageResource(R.drawable.agregar_image);
+        imageView2.setImageResource(R.drawable.agregar_image);
+        imageView3.setImageResource(R.drawable.agregar_image);
+        imageView4.setImageResource(R.drawable.agregar_image);
+
+        formPublicaGraffity = rootView.findViewById(R.id.ScrollViewPublicarGraffity);
+        mProgressView = rootView.findViewById(R.id.publicar_graffiti_progress);
+
+
         et_nombre = (EditText) rootView.findViewById(R.id.et_nombre_graffiti);
         et_descripcion = (EditText) rootView.findViewById(R.id.et_descripcion_graffiti);
         s_ubicacion = (Spinner) rootView.findViewById(R.id.spinnerUbicacion);
@@ -171,10 +198,11 @@ public class PublicarGraffity extends Fragment{
             Toast.makeText(getActivity(), "No tiene conexión a internet", Toast.LENGTH_LONG).show();
         }
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imageView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] options = {"Tomar foto", "Elegir de galeria", "Cancelar"};
+                pos_dir = 0;
+                final CharSequence[] options = {"Tomar foto", "Elegir de galeria","Eliminar Foto", "Cancelar"};
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Abrir desde");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -186,6 +214,97 @@ public class PublicarGraffity extends Fragment{
                             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             intent.setType("image/*");
                             startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE);
+                        } else if (options[seleccion] == "Eliminar Foto") {
+                            imageView1.setImageResource(R.drawable.agregar_image);
+                            dir[pos_dir] = "";
+                            dialog.dismiss();
+                        } else if (options[seleccion] == "Cancelar") {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        imageView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pos_dir = 1;
+                final CharSequence[] options = {"Tomar foto", "Elegir de galeria","Eliminar Foto", "Cancelar"};
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Abrir desde");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int seleccion) {
+                        if (options[seleccion] == "Tomar foto") {
+                            openCamera();
+                        } else if (options[seleccion] == "Elegir de galeria") {
+                            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("image/*");
+                            startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE);
+                        } else if (options[seleccion] == "Eliminar Foto") {
+                            imageView2.setImageResource(R.drawable.agregar_image);
+                            dir[pos_dir] = "";
+                            dialog.dismiss();
+                        } else if (options[seleccion] == "Cancelar") {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        imageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pos_dir = 2;
+                final CharSequence[] options = {"Tomar foto", "Elegir de galeria","Eliminar Foto", "Cancelar"};
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Abrir desde");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int seleccion) {
+                        if (options[seleccion] == "Tomar foto") {
+                            openCamera();
+                        } else if (options[seleccion] == "Elegir de galeria") {
+                            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("image/*");
+                            startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE);
+                        } else if (options[seleccion] == "Eliminar Foto") {
+                            imageView3.setImageResource(R.drawable.agregar_image);
+                            dir[pos_dir] = "";
+                            dialog.dismiss();
+                        } else if (options[seleccion] == "Cancelar") {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        imageView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pos_dir = 3;
+                final CharSequence[] options = {"Tomar foto", "Elegir de galeria","Eliminar Foto", "Cancelar"};
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Abrir desde");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int seleccion) {
+                        if (options[seleccion] == "Tomar foto") {
+                            openCamera();
+                        } else if (options[seleccion] == "Elegir de galeria") {
+                            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("image/*");
+                            startActivityForResult(intent.createChooser(intent, "Selecciona app de imagen"), SELECT_PICTURE);
+                        } else if (options[seleccion] == "Eliminar Foto") {
+                            imageView4.setImageResource(R.drawable.agregar_image);
+                            dir[pos_dir] = "";
+                            dialog.dismiss();
                         } else if (options[seleccion] == "Cancelar") {
                             dialog.dismiss();
                         }
@@ -204,8 +323,12 @@ public class PublicarGraffity extends Fragment{
                 }else if(et_descripcion.getText().toString().length()<=3) {
                     Toast.makeText(getActivity(), "Descripción de graffity no ingresada", Toast.LENGTH_LONG).show();
                     return;
+                }else if(dir[0] == "" && dir[1] == "" && dir[2] == "" && dir[3] == ""){
+                    Toast.makeText(getActivity(), "Debe ingresar a lo menos una imagen.", Toast.LENGTH_LONG).show();
+                    return;
                 }
                 uploadImage.setEnabled(false);
+                showProgress(true);
                 Toast.makeText(getActivity(), "Publicando graffity", Toast.LENGTH_LONG).show();
                 nom = et_nombre.getText().toString();
                 des = et_descripcion.getText().toString();
@@ -306,10 +429,10 @@ public class PublicarGraffity extends Fragment{
         File file = new File(Environment.getExternalStorageDirectory(), MEDIA_DIRECTORY);
         file.mkdirs();
 
-        dir = Environment.getExternalStorageDirectory() + File.separator
-                + MEDIA_DIRECTORY + File.separator + TEMPORAL_PICTURE_NAME;
+        dir[pos_dir] = Environment.getExternalStorageDirectory() + File.separator
+                + MEDIA_DIRECTORY + File.separator + TEMPORAL_PICTURE_NAME[pos_dir];
 
-        File newFile = new File(dir);
+        File newFile = new File(dir[pos_dir]);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
@@ -323,17 +446,25 @@ public class PublicarGraffity extends Fragment{
         switch (requestCode) {
             case PHOTO_CODE:
                 if (resultCode == Activity.RESULT_OK) {
-                    dir = Environment.getExternalStorageDirectory() + File.separator
-                            + MEDIA_DIRECTORY + File.separator + TEMPORAL_PICTURE_NAME;
-                    decodeBitmap(dir);
+                    dir[pos_dir] = Environment.getExternalStorageDirectory() + File.separator
+                            + MEDIA_DIRECTORY + File.separator + TEMPORAL_PICTURE_NAME[pos_dir];
+                    decodeBitmap(dir[pos_dir]);
                 }
                 break;
 
             case SELECT_PICTURE:
                 if (resultCode == Activity.RESULT_OK) {
                     Uri path = data.getData();
-                    dir = getRealPathFromURI(getActivity(), path);
-                    imageView.setImageURI(path);
+                    dir[pos_dir] = getRealPathFromURI(getActivity(), path);
+                    if(pos_dir == 0) {
+                        imageView1.setImageURI(path);
+                    }else if(pos_dir == 1){
+                        imageView2.setImageURI(path);
+                    }else if(pos_dir == 2){
+                        imageView3.setImageURI(path);
+                    }else if(pos_dir == 3){
+                        imageView4.setImageURI(path);
+                    }
                 }
                 break;
         }
@@ -356,12 +487,57 @@ public class PublicarGraffity extends Fragment{
     }
 
     private void decodeBitmap(String ruta) {
-        dir = ruta;
+        dir[pos_dir] = ruta;
         Bitmap bitmap;
         bitmap = BitmapFactory.decodeFile(ruta);
 
-        imageView.setImageBitmap(bitmap);
+        if(pos_dir == 0) {
+            imageView1.setImageBitmap(bitmap);
+        }else if(pos_dir == 1){
+            imageView2.setImageBitmap(bitmap);
+        }else if(pos_dir == 2){
+            imageView3.setImageBitmap(bitmap);
+        }else if(pos_dir == 3){
+            imageView4.setImageBitmap(bitmap);
+        }
     }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            formPublicaGraffity.setVisibility(show ? View.GONE : View.VISIBLE);
+            formPublicaGraffity.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    formPublicaGraffity.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            formPublicaGraffity.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
 
 
     private class UploadImage extends AsyncTask<String, Void, String> {
@@ -384,8 +560,38 @@ public class PublicarGraffity extends Fragment{
             }
 
             try {
-                file = new File(dir);
-                Result = new JSONObject(cloudinary.uploader().upload(file, ObjectUtils.emptyMap()));
+                if(dir[0] != ""){
+                    file = new File(dir[0]);
+                    Result = new JSONObject(cloudinary.uploader().upload(file, ObjectUtils.emptyMap()));
+                    url_image1 = Result.optString("url");
+                }else if(dir[0] == ""){
+                    url_image1 = "";
+                }
+
+                if(dir[1] != ""){
+                    file = new File(dir[1]);
+                    Result = new JSONObject(cloudinary.uploader().upload(file, ObjectUtils.emptyMap()));
+                    url_image2 = Result.optString("url");
+                }else if(dir[1] == ""){
+                    url_image2 = "";
+                }
+
+                if(dir[2] != ""){
+                    file = new File(dir[2]);
+                    Result = new JSONObject(cloudinary.uploader().upload(file, ObjectUtils.emptyMap()));
+                    url_image3 = Result.optString("url");
+                }else if(dir[2] == ""){
+                    url_image3 = "";
+                }
+
+                if(dir[3] != ""){
+                    file = new File(dir[3]);
+                    Result = new JSONObject(cloudinary.uploader().upload(file, ObjectUtils.emptyMap()));
+                    url_image4 = Result.optString("url");
+                }else if(dir[3] == ""){
+                    url_image4 = "";
+                }
+
                 if(opcion_ubicacion == 1){
                     lat = 0;
                     lon = 0;
@@ -400,9 +606,8 @@ public class PublicarGraffity extends Fragment{
                     id_au = 1;
                 }
 
-                url_image = Result.optString("url");
                 Consultas c = new Consultas();
-                return c.publicarGraffitis("http://192.168.42.146:8080/graffcity/graffiti", id_au, 1, nom, des, lat, lon, url_image, 0, false);
+                return c.publicarGraffitis(id_au, 1, nom, des, lat, lon, url_image1,url_image2,url_image3,url_image4, 0, false);
 
 
             } catch (IOException e) {
@@ -416,6 +621,7 @@ public class PublicarGraffity extends Fragment{
         protected void onPostExecute(String result) {
             Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
             uploadImage.setEnabled(true);
+            showProgress(false);
         }
 
 

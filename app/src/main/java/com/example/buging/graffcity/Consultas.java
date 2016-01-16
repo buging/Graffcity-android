@@ -22,6 +22,8 @@ import java.util.Scanner;
  */
 public class Consultas {
 
+    private String inicio = "http://192.168.1.36:8080/graffcity/";
+
     public String session(String ruta){
         try {
             URL url = new URL(ruta);
@@ -66,7 +68,7 @@ public class Consultas {
     public Boolean calificar(Boolean tiene_cal, String id_usuario, String id_graffiti, String calificacion){
         if(tiene_cal == true) {
             try {
-                String ruta = "http://192.168.42.146:8080/graffcity/calificacion/edit?user="+id_usuario+"&graf="+id_graffiti+"&nota="+calificacion;
+                String ruta = inicio+"calificacion/edit?user="+id_usuario+"&graf="+id_graffiti+"&nota="+calificacion;
                 URL url = new URL(ruta);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setReadTimeout(10000);
@@ -87,7 +89,7 @@ public class Consultas {
         }else{
             try {
                 /*conexion*/
-                String ruta = "http://192.168.42.146:8080/graffcity/calificacion";
+                String ruta = inicio+"calificacion";
                 URL url = new URL(ruta);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setReadTimeout(10000);
@@ -116,7 +118,7 @@ public class Consultas {
 
     public int tieneCalificacion(String id_graffiti, String id_usuario){
         try {
-            String ruta = "http://192.168.42.146:8080/graffcity/calificacion/existe?user="+id_usuario+"&graf="+id_graffiti;
+            String ruta = inicio+"calificacion/existe?user="+id_usuario+"&graf="+id_graffiti;
             URL url = new URL(ruta);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setReadTimeout(10000);
@@ -149,7 +151,7 @@ public class Consultas {
 
     public Boolean validarNickName(String nickName){
         try {
-            String ruta = "http://192.168.42.146:8080/graffcity/usuarios/ex.us/"+nickName;
+            String ruta = inicio+"usuarios/ex.us/"+nickName;
             URL url = new URL(ruta);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setReadTimeout(10000);
@@ -181,7 +183,7 @@ public class Consultas {
             if(correo.contains("@") == false){
                 return true;
             }
-            String ruta = "http://192.168.42.146:8080/graffcity/usuarios/existe";
+            String ruta = inicio+"usuarios/existe";
             URL url = new URL(ruta);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setReadTimeout(10000);
@@ -230,10 +232,10 @@ public class Consultas {
     }
 
 
-    public String publicarGraffitis(String u,int autorId, int comunaId,String nombre ,String descripcion, double latitud, double longitud, String link, int numCom, boolean revision){
+    public String publicarGraffitis(int autorId, int comunaId,String nombre ,String descripcion, double latitud, double longitud, String link1,String link2,String link3, String link4, int numCom, boolean revision){
         try {
                 /*conexion*/
-            URL url = new URL(u);
+            URL url = new URL(inicio+"graffiti");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(10000);
@@ -242,7 +244,7 @@ public class Consultas {
             connection.setDoOutput(true);
 
                 /*string que contiene el llamado al servidor*/
-            String query = "{\"autorId\": " + Integer.toString(autorId) + ", \"comunaId\": " + Integer.toString(comunaId) +", \"descripcionGraf\": \""+descripcion+"\",\"latitud\":"+Double.toString(latitud)+",\"linkFoto\":\""+link +"\",\"longitud\":"+Double.toString(longitud)+",\"nombreGraffiti\":\""+nombre+"\", \"numeroCompartidas\":"+Integer.toString(numCom)+",\"revision\":"+Boolean.toString(revision)+"}";
+            String query = "{\"autorId\": " + Integer.toString(autorId) + ", \"comunaId\": " + Integer.toString(comunaId) +", \"descripcionGraf\": \""+descripcion+"\",\"latitud\":"+Double.toString(latitud)+",\"linkFoto1\":\""+link1 + "\",\"linkFoto2\":\""+link2 + "\",\"linkFoto3\":\""+link3 + "\",\"linkFoto4\":\""+link4 +"\",\"longitud\":"+Double.toString(longitud)+",\"nombreGraffiti\":\""+nombre+"\", \"numeroCompartidas\":"+Integer.toString(numCom)+",\"revision\":"+Boolean.toString(revision)+"}";
 
 
             DataOutputStream os = new DataOutputStream(connection.getOutputStream());
@@ -263,7 +265,7 @@ public class Consultas {
     public Boolean registrar(String nombre, String apellido, String nickName, String correo,String password){
         try {
                 /*conexion*/
-            String ruta = "http://192.168.42.146:8080/graffcity/usuarios";
+            String ruta = inicio+"usuarios";
             URL url = new URL(ruta);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setReadTimeout(10000);

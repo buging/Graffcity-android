@@ -104,7 +104,7 @@ public class Mapa extends Fragment {
                             Toast.makeText(getActivity(), "Buscando graffitis cercanos", Toast.LENGTH_SHORT).show();
 
                             ///////////////////////////////
-                            String ruta = "http://192.168.42.146:8080/graffcity/graffiti/GPS?latitud="+String.valueOf(latitud)+"&longitud="+String.valueOf(longitud);
+                            String ruta = "http://192.168.1.3:8080/graffcity/graffiti/GPS?latitud="+String.valueOf(latitud)+"&longitud="+String.valueOf(longitud);
                             new AgregarLugaresMapa().execute(internet,ruta);
                             ///////////////////////////////
                             //realizar llamado para marker

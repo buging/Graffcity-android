@@ -1,30 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ProgressBar android:id="@+id/publicar_graffiti_progress" style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="8dp" android:visibility="gone" />
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ScrollView">
+        android:id="@+id/ScrollViewPublicarGraffity">
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/setPicture"
-                android:layout_marginTop="5dp"
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
-                android:scaleType="centerInside"
-                android:adjustViewBounds="true"
-                android:clickable="true"
-                android:background="#000000"/>
+                android:id = "@+id/tableLayaut1">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/setPicture1"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="90dp"
+                        android:layout_height="230dp"
+                        android:scaleType="centerInside"
+                        android:adjustViewBounds="true"
+                        android:clickable="true"
+                        android:background="#000000"/>
+
+                    <ImageView
+                        android:id="@+id/setPicture2"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="90dp"
+                        android:layout_height="230dp"
+                        android:scaleType="centerInside"
+                        android:adjustViewBounds="true"
+                        android:clickable="true"
+                        android:background="#000000"/>
+
+                    <ImageView
+                        android:id="@+id/setPicture3"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="90dp"
+                        android:layout_height="230dp"
+                        android:scaleType="centerInside"
+                        android:adjustViewBounds="true"
+                        android:clickable="true"
+                        android:background="#000000"/>
+
+                    <ImageView
+                        android:id="@+id/setPicture4"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="90dp"
+                        android:layout_height="230dp"
+                        android:scaleType="centerInside"
+                        android:adjustViewBounds="true"
+                        android:clickable="true"
+                        android:background="#000000"/>
+                </TableRow>
+            </TableLayout>
 
 
             <EditText
@@ -34,7 +76,7 @@
                 android:inputType="textPersonName"
                 android:id="@+id/et_nombre_graffiti"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@+id/setPicture"
+                android:layout_below="@+id/tableLayaut1"
                 android:layout_marginRight="40dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="15dp"
@@ -134,4 +176,4 @@
         </RelativeLayout>
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

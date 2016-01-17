@@ -22,7 +22,11 @@ import java.util.Scanner;
  */
 public class Consultas {
 
-    private String inicio = "http://192.168.1.36:8080/graffcity/";
+    private String inicio = "http://192.168.1.39:8080/graffcity/";
+
+    public String getRuta(){
+        return inicio;
+    }
 
     public String session(String ruta){
         try {

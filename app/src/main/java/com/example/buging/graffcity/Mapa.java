@@ -46,7 +46,12 @@ public class Mapa extends Fragment {
     private List<String> id_graffiti;
     private List<String> nombre_graffiti;
     private List<String> descripcion_graffiti;
-    private List<String> link_graffiti;
+    private List<String> link_graffiti1;
+    private List<String> link_graffiti2;
+    private List<String> link_graffiti3;
+    private List<String> link_graffiti4;
+    private List<String> puntuacion_graffiti;
+
 
     @Nullable
     @Override
@@ -69,7 +74,11 @@ public class Mapa extends Fragment {
         id_graffiti = new ArrayList<String>();
         nombre_graffiti = new ArrayList<String>();
         descripcion_graffiti = new ArrayList<String>();
-        link_graffiti = new ArrayList<String>();
+        link_graffiti1 = new ArrayList<String>();
+        link_graffiti2 = new ArrayList<String>();
+        link_graffiti3 = new ArrayList<String>();
+        link_graffiti4 = new ArrayList<String>();
+        puntuacion_graffiti = new ArrayList<String>();
 
         //nos colacamos a la escucha del gps y en caso de obtener y detectar un cambio de coordenadas nos posicionamos en el lugar
         //y se realiza la busqueda de los lugares cercanos
@@ -104,7 +113,8 @@ public class Mapa extends Fragment {
                             Toast.makeText(getActivity(), "Buscando graffitis cercanos", Toast.LENGTH_SHORT).show();
 
                             ///////////////////////////////
-                            String ruta = "http://192.168.1.3:8080/graffcity/graffiti/GPS?latitud="+String.valueOf(latitud)+"&longitud="+String.valueOf(longitud);
+                            Consultas c = new Consultas();
+                            String ruta = c.getRuta()+"graffiti/GPS?latitud="+String.valueOf(latitud)+"&longitud="+String.valueOf(longitud);
                             new AgregarLugaresMapa().execute(internet,ruta);
                             ///////////////////////////////
                             //realizar llamado para marker
@@ -156,7 +166,11 @@ public class Mapa extends Fragment {
                     if (markerList.get(i).equals(marker)) {
                         Bundle bolsa = new Bundle();
                         bolsa.putString("id", id_graffiti.get(i));
-                        bolsa.putString("link", link_graffiti.get(i));
+                        bolsa.putString("link1", link_graffiti1.get(i));
+                        bolsa.putString("link2", link_graffiti2.get(i));
+                        bolsa.putString("link3", link_graffiti3.get(i));
+                        bolsa.putString("link4", link_graffiti4.get(i));
+                        bolsa.putString("puntuacion", puntuacion_graffiti.get(i));
                         bolsa.putString("nombre", nombre_graffiti.get(i));
                         bolsa.putString("descripcion", descripcion_graffiti.get(i));
                         ver_graffiti.putExtras(bolsa);
@@ -209,12 +223,16 @@ public class Mapa extends Fragment {
 
                 for (int i = 0; i < arreglo.length; i++) {
                     LatLng PERTH = new LatLng(Double.parseDouble(arreglo[i][5]), Double.parseDouble(arreglo[i][6]));
-                    Marker m = map.addMarker(new MarkerOptions().position(PERTH).draggable(true).title(arreglo[i][4]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    Marker m = map.addMarker(new MarkerOptions().position(PERTH).draggable(true).title(arreglo[i][4]).snippet("Puntuación: "+arreglo[i][10]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                     markerList.add(m);
                     id_graffiti.add(arreglo[i][2]);
                     nombre_graffiti.add(arreglo[i][4]);
                     descripcion_graffiti.add(arreglo[i][1]);
-                    link_graffiti.add(arreglo[i][3]);
+                    link_graffiti1.add(arreglo[i][3]);
+                    link_graffiti2.add(arreglo[i][7]);
+                    link_graffiti3.add(arreglo[i][8]);
+                    link_graffiti4.add(arreglo[i][9]);
+                    puntuacion_graffiti.add(arreglo[i][10]);
                 }
             }
         }

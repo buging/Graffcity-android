@@ -1,15 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tmall="http://schemas.android.com/apk/res-auto">
+<android.support.v4.view.ViewPager
+    android:id="@+id/pager_fil"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentBottom="true"/>
 
-    <com.github.snowdream.android.widget.SmartImageView
-        android:id="@+id/foto_graffiti_fill"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#000000"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        />
-
-</LinearLayout>
+<com.example.buging.graffcity.CirclePageIndicator
+    android:id="@+id/indicator_fil"
+    android:gravity="bottom|center_horizontal"
+    tmall:indicator_spacing="5dp"
+    android:layout_marginBottom="20dp"
+    android:layout_marginStart="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentBottom="true"/>
+</merge>

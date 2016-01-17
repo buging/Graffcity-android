@@ -35,4 +35,7 @@ dependencies {
     //smartImageView
     compile 'com.github.snowdream.android:smartimageview:0.0.2'
 
+    //File visualizador Fotos
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/universal-image-loader-1.9.4-SNAPSHOT.jar')
 }

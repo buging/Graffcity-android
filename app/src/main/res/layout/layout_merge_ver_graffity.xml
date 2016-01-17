@@ -1,0 +1,19 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tmall="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:background="#000000"
+        android:layout_height="230dp" />
+
+    <com.example.buging.graffcity.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:gravity="bottom|center_horizontal"
+        tmall:indicator_spacing="5dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"/>
+</merge>

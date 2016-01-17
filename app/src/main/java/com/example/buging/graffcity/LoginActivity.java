@@ -205,7 +205,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 internet = "no";
             }
 
-            ruta = "http://192.168.1.36:8080/graffcity/usuarios/login/"+email+"/"+password;
+            Consultas c = new Consultas();
+            ruta = c.getRuta()+"usuarios/login/"+email+"/"+password;
             mAuthTask = new UserLoginTask(email, password,internet,ruta);
             mAuthTask.execute((Void) null);
         }

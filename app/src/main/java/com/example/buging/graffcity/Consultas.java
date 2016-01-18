@@ -22,11 +22,38 @@ import java.util.Scanner;
  */
 public class Consultas {
 
-    private String inicio = "http://192.168.1.39:8080/graffcity/";
+    private String inicio = "http://192.168.1.45:8080/graffcity/";
 
     public String getRuta(){
         return inicio;
     }
+
+    public String graffitisListados(int ini,int fin){
+        try {
+            String ruta2 = inicio + "graffiti/rango?first="+ini+"&last="+fin;
+            URL url = new URL(ruta2);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(10000);
+            connection.setRequestMethod("GET");
+            connection.setDoInput(true);
+            connection.connect();
+            ruta2 = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A").next();
+            if (ruta2 == "[]") {
+                return "no";
+            }else{
+                return ruta2;
+            }
+        } catch (MalformedURLException e) {
+            Log.e("ERROR", this.getClass().toString() + " " + e.toString());
+        } catch (ProtocolException e) {
+            Log.e("ERROR", this.getClass().toString() + " " + e.toString());
+        } catch (IOException e) {
+            Log.e("ERROR", this.getClass().toString() + " " + e.toString());
+        }
+        return "no";
+    }
+
 
     public String session(String ruta){
         try {

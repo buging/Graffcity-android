@@ -37,6 +37,36 @@ public class JsonHandler {
         return result;
     }// getActors(String actors)
 
+    public String[][] getGraffitisLista(String graffitis) {
+        if (graffitis != "") {
+            try {
+                int n;
+                JSONArray ja = new JSONArray(graffitis);
+                String[][] result = new String[ja.length()][11];
+                for (int i = 0; i < ja.length(); i++) {
+                    JSONObject row = ja.getJSONObject(i);
+                    result[i][0] = String.valueOf(row.optInt("AutorId"));
+                    result[i][1] = row.optString("descripcionGraf");
+                    result[i][2] = String.valueOf(row.optInt("graffitiId"));
+                    result[i][3] = row.optString("linkFoto1");
+                    result[i][4] = row.optString("nombreGraffiti");
+                    result[i][5] = String.valueOf(row.optDouble("latitud"));
+                    result[i][6] = String.valueOf(row.optDouble("longitud"));
+                    result[i][7] = row.optString("linkFoto2");
+                    result[i][8] = row.optString("linkFoto3");
+                    result[i][9] = row.optString("linkFoto4");
+                    result[i][10] = String.valueOf(row.optString("promedio"));
+                }
+                return result;
+            } catch (JSONException e) {
+                Log.e("ERROR", this.getClass().toString() + " " + e.toString());
+            }
+        }
+        String[][] result = new String[1][1];
+        result[0][0] = "no";
+        return result;
+    }
+
     public String[][] getGraffitisCercanos(String graffitis) {
         if (graffitis != "") {
             try {

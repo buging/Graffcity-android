@@ -58,7 +58,7 @@
         </activity>
         <activity
             android:name=".VerGraffiti"
-            android:label="Mostrar Graffiti" >
+            android:label="Mostrar Graffity" >
         </activity>
         <activity
             android:name=".ImageFill"

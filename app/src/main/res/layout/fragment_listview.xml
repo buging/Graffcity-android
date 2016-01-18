@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/progress_list"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:layout_gravity="center"
+        style="@style/ProgressBarStyle" />
 
     <ListView
         android:layout_width="match_parent"
@@ -9,9 +18,5 @@
         android:drawSelectorOnTop="false"
         android:id="@+id/listViewGraffitis" />
 
-    <TextView
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="No hay graffitis"/>
+
 </FrameLayout>
